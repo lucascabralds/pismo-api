@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	// Wire up dependencies
+	// Conecte as dependências
 	store := repository.NewStore()
 
 	accountSvc := service.NewAccountService(store)
@@ -21,11 +21,11 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	// Account routes
+	// Rotas de conta
 	mux.Handle("/accounts", accountHandler)
 	mux.Handle("/accounts/", accountHandler)
 
-	// Transaction routes
+	// Rotas de transação
 	mux.Handle("/transactions", transactionHandler)
 
 	// OpenAPI spec

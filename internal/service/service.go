@@ -7,10 +7,10 @@ import (
 	"github.com/pismo/api/internal/repository"
 )
 
-// ErrNotFound is re-exported for handler use.
+// ErrNotFound é reexportado para uso no manipulador.
 var ErrNotFound = repository.ErrNotFound
 
-// ErrDuplicate is re-exported for handler use.
+// ErrDuplicate é reexportado para uso do manipulador.
 var ErrDuplicate = repository.ErrDuplicate
 
 // AccountService handles business logic for accounts.
@@ -33,7 +33,7 @@ func (s *AccountService) Get(id int64) (*model.Account, error) {
 	return s.store.GetAccount(id)
 }
 
-// TransactionService handles business logic for transactions.
+// O TransactionService lida com a lógica de negócios das transações.
 type TransactionService struct {
 	store *repository.Store
 }
@@ -47,7 +47,7 @@ func (s *TransactionService) Create(accountID, operationTypeID int64, amount flo
 		return nil, errors.New("amount must not be zero")
 	}
 
-	// Validate account exists
+	// Verifique se a conta existe.
 	if _, err := s.store.GetAccount(accountID); err != nil {
 		if errors.Is(err, repository.ErrNotFound) {
 			return nil, errors.New("account not found")
@@ -55,7 +55,7 @@ func (s *TransactionService) Create(accountID, operationTypeID int64, amount flo
 		return nil, err
 	}
 
-	// Validate operation type exists
+	// Validar se o tipo de operação existe
 	if _, err := s.store.GetOperationType(operationTypeID); err != nil {
 		if errors.Is(err, repository.ErrNotFound) {
 			return nil, errors.New("operation_type not found")

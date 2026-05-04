@@ -10,7 +10,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o pismo-api ./cmd/api
 
-# Final stage
+# Estágio Final
 FROM alpine:3.19
 
 WORKDIR /app

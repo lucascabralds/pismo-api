@@ -13,7 +13,7 @@ import (
 	"github.com/pismo/api/internal/service"
 )
 
-// helpers
+// ajudantes
 
 func newDeps() (*handler.AccountHandler, *handler.TransactionHandler) {
 	store := repository.NewStore()
@@ -38,7 +38,7 @@ func decodeResponse(t *testing.T, w *httptest.ResponseRecorder, v any) {
 	}
 }
 
-// --- Account tests ---
+// --- Testes de conta ---
 
 func TestCreateAccount_Success(t *testing.T) {
 	accH, _ := newDeps()
@@ -69,7 +69,7 @@ func TestCreateAccount_DuplicateDocument(t *testing.T) {
 
 	body := toJSON(t, model.CreateAccountRequest{DocumentNumber: "99999999999"})
 
-	// first request
+	// Primeira requisição
 	req := httptest.NewRequest(http.MethodPost, "/accounts", body)
 	w := httptest.NewRecorder()
 	accH.ServeHTTP(w, req)
@@ -77,7 +77,7 @@ func TestCreateAccount_DuplicateDocument(t *testing.T) {
 		t.Fatalf("expected 201, got %d", w.Code)
 	}
 
-	// second request with same document
+	// segunda requisição com o mesmo documento
 	body2 := toJSON(t, model.CreateAccountRequest{DocumentNumber: "99999999999"})
 	req2 := httptest.NewRequest(http.MethodPost, "/accounts", body2)
 	w2 := httptest.NewRecorder()
@@ -150,7 +150,7 @@ func TestGetAccount_InvalidID(t *testing.T) {
 	}
 }
 
-// --- Transaction tests ---
+// --- Testes de transações ---
 
 func createAccountForTest(t *testing.T, accH *handler.AccountHandler, doc string) model.Account {
 	t.Helper()

@@ -12,7 +12,7 @@ import (
 	"github.com/pismo/api/internal/service"
 )
 
-// --- helpers ---
+// --- Ajudantes ---
 
 func writeJSON(w http.ResponseWriter, status int, v any) {
 	w.Header().Set("Content-Type", "application/json")
@@ -28,7 +28,7 @@ func decodeBody(r *http.Request, v any) error {
 	return json.NewDecoder(r.Body).Decode(v)
 }
 
-// pathID extracts the last path segment and parses it as int64.
+// pathID extrai o último segmento do caminho e o analisa como um int64..
 // e.g. "/accounts/42" → 42
 func pathID(r *http.Request) (int64, error) {
 	parts := strings.Split(strings.TrimSuffix(r.URL.Path, "/"), "/")
@@ -50,7 +50,7 @@ func NewAccountHandler(svc *service.AccountService) *AccountHandler {
 	return &AccountHandler{svc: svc}
 }
 
-// ServeHTTP dispatches GET /accounts/:id and POST /accounts
+// ServeHTTP envia solicitações GET para /accounts/:id e POST para /accounts.
 func (h *AccountHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// POST /accounts
 	if r.Method == http.MethodPost && strings.TrimSuffix(r.URL.Path, "/") == "/accounts" {
@@ -105,7 +105,7 @@ func (h *AccountHandler) get(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, acc)
 }
 
-// --- Transaction handler ---
+// --- manipulador de transações ---
 
 type TransactionHandler struct {
 	svc *service.TransactionService

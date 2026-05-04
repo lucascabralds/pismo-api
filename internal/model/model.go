@@ -31,7 +31,7 @@ type CreateTransactionRequest struct {
 	Amount          float64 `json:"amount"`
 }
 
-// Error response
+// Resposta errada
 type ErrorResponse struct {
 	Error string `json:"error"`
 }

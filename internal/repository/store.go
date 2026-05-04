@@ -8,13 +8,13 @@ import (
 	"github.com/pismo/api/internal/model"
 )
 
-// ErrNotFound is returned when a record is not found.
+// ErrNotFound é retornado quando nenhum registro é encontrado..
 var ErrNotFound = errors.New("not found")
 
-// ErrDuplicate is returned when a unique constraint is violated.
+// ErrDuplicate é retornado quando uma restrição única é violada.
 var ErrDuplicate = errors.New("document number already exists")
 
-// Store holds all in-memory data.
+// Store Armazena todos os dados na memória.
 type Store struct {
 	mu sync.RWMutex
 
@@ -27,7 +27,7 @@ type Store struct {
 	nextTransactionID int64
 }
 
-// NewStore creates a new Store pre-seeded with the four operation types.
+// NewStore Cria uma nova loja pré-configurada com os quatro tipos de operação..
 func NewStore() *Store {
 	s := &Store{
 		accounts:       make(map[int64]*model.Account),
@@ -38,7 +38,7 @@ func NewStore() *Store {
 		nextTransactionID: 1,
 	}
 
-	// Seed operation types
+	// Tipos de operação pré-configurados
 	for id, desc := range map[int64]string{
 		1: "PURCHASE",
 		2: "INSTALLMENT PURCHASE",
@@ -51,7 +51,7 @@ func NewStore() *Store {
 	return s
 }
 
-// --- Accounts ---
+// --- Contas ---
 
 func (s *Store) CreateAccount(docNumber string) (*model.Account, error) {
 	s.mu.Lock()
@@ -82,7 +82,7 @@ func (s *Store) GetAccount(id int64) (*model.Account, error) {
 	return acc, nil
 }
 
-// --- Operation Types ---
+// --- Tipos de operações ---
 
 func (s *Store) GetOperationType(id int64) (*model.OperationType, error) {
 	s.mu.RLock()
@@ -95,16 +95,16 @@ func (s *Store) GetOperationType(id int64) (*model.OperationType, error) {
 	return ot, nil
 }
 
-// --- Transactions ---
+// --- Transações ---
 
-// debtOperations holds operation type IDs that should be stored as negative amounts.
+// debtOperations contém IDs de tipo de operação que devem ser armazenados como valores negativos..
 var debtOperations = map[int64]bool{1: true, 2: true, 3: true}
 
 func (s *Store) CreateTransaction(accountID, operationTypeID int64, amount float64) (*model.Transaction, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	// Enforce sign convention
+	// Impor a convenção de sinalização
 	if debtOperations[operationTypeID] && amount > 0 {
 		amount = -amount
 	} else if !debtOperations[operationTypeID] && amount < 0 {
